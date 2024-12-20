@@ -1,34 +1,25 @@
 #include <iostream>
-#include <string>
-#include <map>
-#include <algorithm>
+#include <vector>
+#include <limits>
 using namespace std;
 
 int main() {
-    map<int, int> mp;
-    mp[0];
-    mp[1];
-    mp[2];
-    mp[3];
-    mp[4];
-    mp[5];
-    mp[6];
-    mp[7];
-    mp[8];
-    mp[9];
-    int a, b;
-    cin >> a >> b;
-    for (int i = a; i <= b; ++i) {
-        long long temp1 = i;  // 将temp1类型改为long long，避免整数溢出
-        while (temp1!= 0) {
-            int temp2 = temp1 % 10;
-            temp1 /= 10;
-            mp[temp2]++;
-        }
+    int n, m;
+    cin >> n >> m;
+ 
+
+    vector<int> v(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> v[i];
     }
-    // 遍历0到9并输出出现次数
-for(auto it:mp){
-    cout<<it.second<<" ";
-}
+    int minval = numeric_limits<int>::max();
+    for (int i = 0; i <= n - m; ++i) {  // 修正外层循环范围，确保不会超出有效范围求子序列和
+        int sum = 0;
+        for (int j = i; j < i + m; ++j) {  // 修正内层循环范围，准确获取长度为m的子序列元素求和
+            sum += v[j];
+        }
+        minval = min(sum, minval);
+    }
+    cout << minval << endl;
     return 0;
 }
