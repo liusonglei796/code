@@ -1,48 +1,46 @@
-#include <iostream>
-#include <list>
-#include <unordered_map>
-
+#include<bits/stdc++.h>
 using namespace std;
 
 int main() {
-    int N;
-    cin >> N;
-
-    list<int> queue;
-    queue.push_back(1);
-
-    unordered_map<int, list<int>::iterator> positionMap;
-    positionMap[1] = queue.begin();
-
-    for (int i = 2; i <= N; ++i) {
-        int k, p;
-        cin >> k >> p;
-
-        list<int>::iterator it = positionMap[k];
-        if (p == 0) {
-            it = queue.insert(it, i);
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    
+    int n;
+    cin >> n;
+    list<int> lt;
+    vector<list<int>::iterator> p(n+1);
+    vector<bool> removed(n+1, false);
+    
+    // Insert first element
+    p[1] = lt.insert(lt.begin(), 1);
+    
+    // Process insertions
+    for(int i = 2; i <= n; i++) {
+        int id, op;
+        cin >> id >> op;
+        if(op == 0) {
+            p[i] = lt.insert(p[id], i);
         } else {
-            it = queue.insert(next(it), i);
-        }
-        positionMap[i] = it;
-    }
-
-    int M;
-    cin >> M;
-    for (int i = 0; i < M; ++i) {
-        int x;
-        cin >> x;
-        if (positionMap.find(x) != positionMap.end()) {
-            queue.erase(positionMap[x]);
-            positionMap.erase(x);
+            p[i] = lt.insert(next(p[id]), i);
         }
     }
-
-    for (list<int>::iterator it = queue.begin(); it != queue.end(); ++it) {
-        if (it != queue.begin()) cout << " ";
-        cout << *it;
+    
+    // Process removals
+    int m;
+    cin >> m;
+    for(int i = 0; i < m; i++) {
+        int id;
+        cin >> id;
+        if(!removed[id]) {
+            lt.erase(p[id]);
+            removed[id] = true;
+        }
     }
-    cout << endl;
-
+    
+    // Output result
+    for(int x : lt) {
+        cout << x << " ";
+    }
+    
     return 0;
 }
