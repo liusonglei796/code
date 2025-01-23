@@ -15,22 +15,40 @@ int main() {
     int N, NA, NB;
     cin >> N >> NA >> NB;
 
-    vector<int> A(NA), B(NB);
-    for (int i = 0; i < NA; i++) cin >> A[i];
-    for (int i = 0; i < NB; i++) cin >> B[i];
+    queue<int> queueA, queueB;
+
+    // 读取小 A 的出拳规律并存入队列
+    for (int i = 0; i < NA; i++) {
+        int x;
+        cin >> x;
+        queueA.push(x);
+    }
+
+    // 读取小 B 的出拳规律并存入队列
+    for (int i = 0; i < NB; i++) {
+        int x;
+        cin >> x;
+        queueB.push(x);
+    }
 
     int scoreA = 0, scoreB = 0;
 
     for (int i = 0; i < N; i++) {
-        int a = A[i % NA]; // 小 A 的出拳
-        int b = B[i % NB]; // 小 B 的出拳
+        int a = queueA.front(); // 小 A 的出拳
+        int b = queueB.front(); // 小 B 的出拳
 
+        // 判断胜负并更新得分
         if (result[a][b] == 1) {
             scoreA++; // 小 A 胜
         } else if (result[a][b] == -1) {
             scoreB++; // 小 B 胜
         }
-        // 平局不计分
+
+        // 将出拳重新放回队尾
+        queueA.push(queueA.front());
+        queueA.pop();
+        queueB.push(queueB.front());
+        queueB.pop();
     }
 
     cout << scoreA << " " << scoreB << endl;

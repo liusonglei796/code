@@ -1,27 +1,25 @@
-#include <iostream>
-#include <unordered_map>
+#include<bits/stdc++.h>
 using namespace std;
 
 int main() {
-    long long n, c;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int n, c;
     cin >> n >> c;
-    int arr[2 * 100000];
-    for (int i = 0; i < n; ++i) {
-        cin >> arr[i];
+    vector<int> nums(n);
+    
+    for(int i = 0; i < n; i++) {
+        cin >> nums[i];
     }
-    unordered_map<int, int> num_count;  // 哈希表，键为数字，值为该数字出现的次数
-    // 统计每个数字出现的次数
-    for (int i = 0; i < n; ++i) {
-        num_count[arr[i]]++;
-    }
+    sort(nums.begin(), nums.end());
+    
     long long count = 0;
-    // 遍历数组，查找满足条件的数对
-    for (int i = 0; i < n; ++i) {
-        int target = arr[i] - c;
-        if (num_count.find(target)!= num_count.end()) {
-            count += num_count[target];
-        }
+    for(int i = 0; i < n; i++) {
+        count += upper_bound(nums.begin(), nums.end(), nums[i] + c) 
+               - lower_bound(nums.begin(), nums.end(), nums[i] + c);
     }
-    cout << count << endl;
+    
+    cout << count << "\n";
     return 0;
 }
