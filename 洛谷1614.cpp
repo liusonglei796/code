@@ -1,25 +1,31 @@
-#include <iostream>
-#include <vector>
-#include <limits>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int n, m;
-    cin >> n >> m;
- 
+int n, m;
+vector<int> v(3005);  // n最大为3000
 
-    vector<int> v(n);
-    for (int i = 0; i < n; ++i) {
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    cin >> n >> m;
+    
+    // 输入n个刺痛值，从索引1开始存储
+    for(int i = 1; i <= n; i++) {
         cin >> v[i];
     }
-    int minval = numeric_limits<int>::max();
-    for (int i = 0; i <= n - m; ++i) {  // 修正外层循环范围，确保不会超出有效范围求子序列和
+    
+    // 寻找连续m个数的最小和
+    int minSum = INT_MAX;
+    for(int i = 1; i <= n-m+1; i++) {  // 注意这里是n-m+1
         int sum = 0;
-        for (int j = i; j < i + m; ++j) {  // 修正内层循环范围，准确获取长度为m的子序列元素求和
+        // 计算从i开始的m个数的和
+        for(int j = i; j <= i+m-1; j++) {  // 注意这里是i+m-1
             sum += v[j];
         }
-        minval = min(sum, minval);
+        minSum = min(minSum, sum);
     }
-    cout << minval << endl;
+    
+    cout << minSum << endl;
     return 0;
 }
