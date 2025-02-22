@@ -17,13 +17,12 @@ void dfs(int depth) {
         }
         return;
     }
-    
+    //每次都从1到9遍历用used数组标记已用数字不需要start参数这样才能得到所有可能的排列
     for(int i = 1; i <= 9; i++) {
         if(!used[i]) {
             used[i] = true;
           path[depth]=i;
             dfs(depth + 1);
-         
             used[i] = false;
         }
     }
