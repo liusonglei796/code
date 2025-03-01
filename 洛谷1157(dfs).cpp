@@ -14,12 +14,12 @@ void dfs(int pos, int num, int last = 0) {
         return;
     }
     for (int i = last + 1; i <= n; ++i) {
-        if (!used[i]) {
-            used[i] = true;
+       
+        
             b[pos] = i;
             dfs(pos + 1, num + 1, i);
-            used[i] = false;
-        }
+      
+
     }
 }
 
