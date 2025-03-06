@@ -20,7 +20,8 @@ void dfs(int pos) {
             visited[i] = true;
             path[pos] = i;
             dfs(pos + 1);
-            visited[i] = false;  // 回溯，恢复状态
+            visited[i] = false;
+             path[pos]=0;// 回溯，恢复状态
         }
     }
 }
