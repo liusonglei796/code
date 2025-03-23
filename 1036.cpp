@@ -1,50 +1,40 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <cmath>
 using namespace std;
 
-int n, k;
-vector<bool> visited;
-vector<int> v;
-int cnt = 0;
-int sum = 0;  // 改为全局变量
-
-bool isprime(int x) {
-    if(x <= 1) return false;
-    if(x == 2) return true;
-    for(int i = 2; i <= sqrt(x); ++i) {
-        if(x % i == 0) return false;
+// 判断一个数是否为质数（素数）
+bool isPrime(int num) {
+    if (num < 2) return false;
+    for (int i = 2; i <= sqrt(num); i++) {
+        if (num % i == 0) return false;
     }
     return true;
 }
 
-void dfs(int pos, int start) {  // 移除sum参数
-    if(pos == k) {
-        if(isprime(sum)) {
-            cnt++;
+// 深度优先搜索函数，用于生成组合并判断和是否为素数
+void dfs(vector<int>& nums, int start, int k, int sum, int& count) {
+    if (k == 0) {
+        if (isPrime(sum)) {
+            count++;
         }
         return;
     }
-    
-    for(int i = start; i < n; ++i) {
-        if(!visited[i]) {
-            visited[i] = true;
-            sum += v[i];        // 加入当前数
-            dfs(pos + 1, i + 1);
-            sum -= v[i];        // 回溯时减去
-            visited[i] = false;
-        }
+    for (int i = start; i < nums.size(); i++) {
+        dfs(nums, i + 1, k - 1, sum + nums[i], count);
     }
 }
-
+int sum=0;
 int main() {
+    int n, k;
     cin >> n >> k;
-    v.resize(n);
-    visited.resize(n, false);
-    for(int i = 0; i < n; ++i) {
-        cin >> v[i];
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
     }
-    
-    dfs(0, 0);  // 移除sum参数
-    cout << cnt << endl;
-    
+    int count = 0;
+    dfs(nums, 0, k, sum, count);
+    cout << count << endl;
     return 0;
 }
+   
