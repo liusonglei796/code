@@ -1,43 +1,53 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
 using namespace std;
 
-vector<string> grid;
-int n, m;
-int changes = 0;
-
-void paint(char color, int start, int end) {
-    for(int i = start; i < end; ++i) {
-        for(int j = 0; j < m; ++j) {
-            if(grid[i][j] != color) {
-                changes++;
-            }
-        }
-    }
-}
-
 int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    
+    int n, m;
     cin >> n >> m;
-    grid.resize(n);
-    for(int i = 0; i < n; ++i) {
-        cin >> grid[i];
+
+    vector<string> v(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> v[i];
     }
-    
-    int minChanges = INT_MAX;
-    // i: 白色结束行
-    // j: 蓝色结束行
-    for(int i = 0; i < n-2; ++i) {
-        for(int j = i+1; j < n-1; ++j) {
-            changes = 0;
-            paint('W', 0, i+1);    // [0, i]为白色
-            paint('B', i+1, j+1);  // [i+1, j]为蓝色
-            paint('R', j+1, n);    // [j+1, n-1]为红色
-            minChanges = min(minChanges, changes);
+
+    int ans = n * m; // 初始化为最大可能涂色数
+
+    for (int i = 0; i < n - 2; ++i) {
+        for (int j = i + 1; j < n - 1; ++j) {
+            int cur = 0;
+            // 计算白色区域涂色数
+            for (int r = 0; r <= i; ++r) {
+                for (int c = 0; c < m; ++c) {
+                    if (v[r][c] != 'W') {
+                        cur++;
+                    }
+                }
+            }
+            // 计算蓝色区域涂色数
+            for (int r = i + 1; r <= j; ++r) {
+                for (int c = 0; c < m; ++c) {
+                    if (v[r][c] != 'B') {
+                        cur++;
+                    }
+                }
+            }
+            // 计算红色区域涂色数
+            for (int r = j + 1; r < n; ++r) {
+                for (int c = 0; c < m; ++c) {
+                    if (v[r][c] != 'R') {
+                        cur++;
+                    }
+                }
+            }
+            ans = min(ans, cur);
         }
     }
-    
-    cout << minChanges << endl;
+
+    cout << ans << endl;
+
     return 0;
 }
